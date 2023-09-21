@@ -10,7 +10,7 @@ li {
     float: left;
 }
 
-li:first-child{
+li:first-child {
     margin-left: 25px;
 }
 
@@ -22,11 +22,18 @@ li a {
     text-align: center;
 }
 
-li a:hover{
+li a:hover {
     background-color: #46a8a2;
 }
 
-li:last-child{
+li:last-child {
     float: right;
     margin-right: 25px;
+}
+
+.menu-logo {
+    margin-top: 10px;
+    margin-right: 10px; 
+    max-height: 30px; 
+    vertical-align: middle;
 }

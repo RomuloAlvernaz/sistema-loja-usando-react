@@ -1,21 +1,39 @@
 import './index.css';
+import { Link, useLocation } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import usuarioService from '../../service/usuario-service';
 
-import {Link, useLocation} from 'react-router-dom';
+function Menu() {
 
-function Menu(){
+    const logout = () =>{
+        usuarioService.sairSistema();
+    };
 
-    if (useLocation().pathname !== '/login'){
-        return(
+    if (useLocation().pathname !== '/login') {
+        return (
             <ul className='menu'>
-                <li><Link to='/'>Home</Link></li>
+                <li className="logo">
+                    <img src="/logo2.png" alt="Logo" className="menu-logo" />
+                </li>
+                <li>
+                    <Link to='/'>Home</Link>
+                </li>
                 <li><Link to='/clientes'>Cliente</Link></li>
                 <li><Link to='/produtos'>Produto</Link></li>
-                <li><Link to='/login'>Sair</Link></li>
+
+                {/* botao de sair */}
+                <li>
+                    <Link onClick={logout}>
+                        <FontAwesomeIcon icon={faSignOutAlt} style={{ fontSize: '20px', color: "#ffffff" }} />
+                    </Link>
+                </li>
+                
             </ul>
         )
-    }else {
+    } else {
         return null;
     }
 }
 
-export default Menu; 
+export default Menu;
