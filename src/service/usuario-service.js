@@ -55,7 +55,7 @@ function validarUsuarioAutenticado(){
     
 }
 
-// validarUsuarioAutenticado(); 
+validarUsuarioAutenticado(); 
 
 
 export default {

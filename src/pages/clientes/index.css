@@ -2,3 +2,7 @@
 .titulo{
     color: var(--cor-primaria);
 }
+
+.modal-title{
+    color: var(--cor-primaria);
+}
