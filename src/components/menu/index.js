@@ -16,9 +16,6 @@ function Menu() {
                 <li className="logo">
                     <img src="/logo2.png" alt="Logo" className="menu-logo" />
                 </li>
-                <li>
-                    <Link to='/'>Home</Link>
-                </li>
                 <li><Link to='/clientes'>Cliente</Link></li>
                 <li><Link to='/produtos'>Produto</Link></li>
 
