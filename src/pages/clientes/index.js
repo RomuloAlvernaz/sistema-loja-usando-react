@@ -129,7 +129,10 @@ function ClientePage() {
                         className="btn btn-primary btn-sm"
                         data-bs-toggle="modal"
                         data-bs-target="#modal-cliente"
-                        onClick={adicionar}
+                        onClick={() => {
+                            limparCliente(); 
+                            adicionar();
+                        }}
                     >
                         Adicionar
                     </button>
@@ -266,7 +269,7 @@ function ClientePage() {
                                 </button>
                                 <button id="btn-cancelar" className="btn btn-light btn-sm" data-bs-dismiss="modal">Cancelar</button>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
