@@ -173,7 +173,7 @@ function ClientePage() {
                                         <button
                                             id={cliente.id}
                                             onClick={deletar}
-                                            className="btn btn-outline-danger btn-sm mr3">
+                                            className="btn btn-outline-danger btn-sm espacar">
                                             Deletar
                                         </button>
                                     </td>
