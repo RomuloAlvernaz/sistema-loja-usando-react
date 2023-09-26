@@ -4,13 +4,13 @@ import clienteService from '../../service/cliente-service';
 
 import { useEffect, useState } from 'react';
 import Cliente from '../../models/Cliente'
-function ClientePage () {
+function ClientePage() {
 
     const [clientes, setClientes] = useState([]);
     const [modoEdicao, setModoEdicao] = useState(false);
-    const [cliente, setCliente] = useState(new Cliente()); 
+    const [cliente, setCliente] = useState(new Cliente());
 
-    
+
 
     useEffect(() => {
 
@@ -24,20 +24,40 @@ function ClientePage () {
 
     }, []);
 
-    const editar = (id) => {
+    const editar = (e) => {
         setModoEdicao(true);
+        let clienteEncontrado = clientes.find(c => c.id == e.target.id);
+
+        setCliente(clienteEncontrado);
     }
 
-    const deletar = (id) => {
-        alert(id)
+    const deletar = (e) => {
+        let clienteEncontrado = clientes.find(c => c.id == e.target.id);
+
+        // eslint-disable-next-line no-restricted-globals
+        if (confirm("Tem certeza que deseja deletar o cliente " + clienteEncontrado.nome + "?")) {
+            deletarClienteBackEnd(clienteEncontrado.id);
+
+        }
     }
 
-    const adicionar = () =>{
+
+    const adicionar = () => {
         setModoEdicao(false);
     }
 
-    const salvar = () =>{
-        if(!cliente.nome || !cliente.cpfOuCnpj || !cliente.email) {
+    const atualizarClienteNaTabela = (clienteAtualizado, deletarCliente = false) => {
+        let indice = clientes.findIndex((cliente) => cliente.id === clienteAtualizado.id);
+
+        (deletarCliente)
+            ? clientes.splice(indice, 1)
+            : clientes.splice(indice, 1, cliente);
+
+        setClientes(arr => [...arr]);
+    }
+
+    const salvar = () => {
+        if (!cliente.nome || !cliente.cpfOuCnpj || !cliente.email) {
             alert("E-mail e CPF são obrigatórios!")
             return;
         }
@@ -47,29 +67,47 @@ function ClientePage () {
 
     const adicionarClienteBackend = (cliente) => {
         clienteService.adicionar(cliente)
-        .then(response => {
-            setClientes(lista => [...lista, new Cliente(response.data)])
-            limparCliente(); 
-            alert("Cliente adicionado com sucesso!"); 
-        })
-        .catch(erro => {
+            .then(response => {
+                setClientes(lista => [...lista, new Cliente(response.data)])
+                limparCliente();
+                alert("Cliente adicionado com sucesso!");
+            })
+            .catch(erro => {
 
-        })
+            })
     }
 
     const atualizarClienteBackend = (cliente) => {
-        
+        clienteService.atualizar(cliente)
+            .then(response => {
+                atualizarClienteNaTabela(response.data, false);
+                limparCliente();
+                alert("Cliente atualizado com sucesso!");
+            })
+            .catch(erro => {
+
+            })
     }
 
-    const limparCliente = () =>{
+    const deletarClienteBackEnd = (id) => {
+        clienteService.deletar(id)
+            .then(() => {
+                let clienteEncontrado = clientes.find(c => c.id == id);
+                atualizarClienteNaTabela(clienteEncontrado, true);
+                alert("Cliente deletado com sucesso!");
+            })
+            .catch();
+    }
+
+    const limparCliente = () => {
         setCliente({
-            ...cliente, 
+            ...cliente,
             id: '',
             nome: '',
             email: '',
             telefone: '',
-            cpfOuCnpj: '', 
-        }); 
+            cpfOuCnpj: '',
+        });
     }
 
     return (
@@ -121,15 +159,17 @@ function ClientePage () {
                                     <td>{cliente.email}</td>
                                     <td>{cliente.telefone}</td>
                                     <td>
-                                        <button 
-                                            onClick={editar} 
+                                        <button
+                                            id={cliente.id}
+                                            onClick={editar}
                                             className="btn btn-outline-primary btn-sm mr3"
                                             data-bs-toggle="modal"
                                             data-bs-target="#modal-cliente">
                                             Editar
                                         </button>
-                                        <button 
-                                            onClick={deletar} 
+                                        <button
+                                            id={cliente.id}
+                                            onClick={deletar}
                                             className="btn btn-outline-danger btn-sm mr3">
                                             Deletar
                                         </button>
@@ -150,7 +190,7 @@ function ClientePage () {
 
                             {/* Modal Header */}
                             <div className="modal-header">
-                                <h4 className="modal-title">{modoEdicao ? "Editar": "Adicionar"}</h4>
+                                <h4 className="modal-title">{modoEdicao ? "Editar" : "Adicionar"}</h4>
                                 <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
                             </div>
 
@@ -160,9 +200,9 @@ function ClientePage () {
                                 <div className="row">
                                     <div className="col-sm-2">
                                         <label for="id" className="form-label">Id</label>
-                                        <input 
-                                            disabled type="text" 
-                                            className="form-control" 
+                                        <input
+                                            disabled type="text"
+                                            className="form-control"
                                             id="id"
                                             value={cliente.id}
                                             onChange={(e) => setCliente({ ...cliente, id: e.target.value })}
@@ -171,10 +211,10 @@ function ClientePage () {
 
                                     <div class="col-sm-10">
                                         <label for="nome" className="form-label">Nome</label>
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
-                                            id="nome" 
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="nome"
                                             value={cliente.nome}
                                             onChange={(e) => setCliente({ ...cliente, nome: e.target.value })}
                                         />
@@ -184,19 +224,19 @@ function ClientePage () {
                                 <div className="row">
                                     <div className="col-sm-6">
                                         <label for="email" className="form-label">E-mail</label>
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
-                                            id="email" 
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="email"
                                             value={cliente.email}
                                             onChange={(e) => setCliente({ ...cliente, email: e.target.value })}
                                         />
                                     </div>
                                     <div className="col-sm-3">
                                         <label for="telefone" className="form-label">Telefone</label>
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
+                                        <input
+                                            type="text"
+                                            className="form-control"
                                             id="telefone"
                                             value={cliente.telefone}
                                             onChange={(e) => setCliente({ ...cliente, telefone: e.target.value })}
@@ -205,10 +245,10 @@ function ClientePage () {
 
                                     <div class="col-sm-3">
                                         <label for="cpf" className="form-label">CPF</label>
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
-                                            id="cpf" 
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="cpf"
                                             value={cliente.cpfOuCnpj}
                                             onChange={(e) => setCliente({ ...cliente, cpfOuCnpj: e.target.value })}
                                         />
@@ -221,10 +261,12 @@ function ClientePage () {
 
                             {/* Modal footer  */}
                             <div className="modal-footer">
-                                <button id="btn-salvar" className="btn btn-success btn-sm" onClick={salvar}>Salvar</button>
+                                <button id="btn-salvar" className="btn btn-success btn-sm" data-bs-dismiss="modal" onClick={salvar}>
+                                    Salvar
+                                </button>
                                 <button id="btn-cancelar" className="btn btn-light btn-sm" data-bs-dismiss="modal">Cancelar</button>
                             </div>
-
+                            
                         </div>
                     </div>
                 </div>
