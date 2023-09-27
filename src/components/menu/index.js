@@ -3,34 +3,45 @@ import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import usuarioService from '../../service/usuario-service';
+import React, { useState } from 'react'; // Importe o useState corretamente
+import SearchBox from './SearchBox';
 
 function Menu() {
+  const logout = () => {
+    usuarioService.sairSistema();
+  };
 
-    const logout = () =>{
-        usuarioService.sairSistema();
-    };
+  const [searchTerm, setSearchTerm] = useState('');
 
-    if (useLocation().pathname !== '/login') {
-        return (
-            <ul className='menu'>
-                <li className="logo">
-                    <img src="/logo2.png" alt="Logo" className="menu-logo" />
-                </li>
-                <li><Link to='/clientes'>Cliente</Link></li>
-                <li><Link to='/produtos'>Produto</Link></li>
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
 
-                {/* botao de sair */}
-                <li>
-                    <Link onClick={logout}>
-                        <FontAwesomeIcon icon={faSignOutAlt} style={{ fontSize: '20px', color: "#ffffff" }} />
-                    </Link>
-                </li>
-                
-            </ul>
-        )
-    } else {
-        return null;
-    }
+  if (useLocation().pathname !== '/login') {
+    return (
+      <ul className='menu'>
+        <li className="logo">
+          <img src="/logo2.png" alt="Logo" className="menu-logo" />
+        </li>
+        <li><Link to='/clientes'>Cliente</Link></li>
+        <li><Link to='/produtos'>Produto</Link></li>
+
+        <li>
+          <SearchBox onSearch={handleSearch} />
+        </li>
+
+        {/* botao de sair */}
+        <li>
+          <Link onClick={logout}>
+            <FontAwesomeIcon icon={faSignOutAlt} style={{ fontSize: '20px', color: "#ffffff" }} />
+          </Link>
+        </li>
+
+      </ul>
+    )
+  } else {
+    return null;
+  }
 }
 
 export default Menu;

@@ -37,3 +37,17 @@ li:last-child {
     max-height: 30px; 
     vertical-align: middle;
 }
+
+.search-box {
+    float: right;
+    margin-right: 25px;
+    margin-left: 1030px;
+    margin-top: 11px;
+    margin-bottom: 11px;
+    width: 250px;
+    border-radius: 7px;
+    border: none;
+    height: 35px;
+    padding-inline: 10px;
+  }
+  
