@@ -23,8 +23,8 @@ function Menu() {
         <li className="logo">
           <img src="/logo2.png" alt="Logo" className="menu-logo" />
         </li>
-        <li><Link to='/clientes'>Cliente</Link></li>
-        <li><Link to='/produtos'>Produto</Link></li>
+        <li><Link to='/clientes'>Clientes</Link></li>
+        <li><Link to='/produtos'>Produtos</Link></li>
 
         <li>
           <SearchBox onSearch={handleSearch} />
