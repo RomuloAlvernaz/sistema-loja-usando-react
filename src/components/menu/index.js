@@ -3,19 +3,19 @@ import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import usuarioService from '../../service/usuario-service';
-import React, { useState } from 'react'; // Importe o useState corretamente
-import SearchBox from './SearchBox';
+// import React, { useState } from 'react';
+// import SearchBox from './SearchBox';
 
 function Menu() {
   const logout = () => {
     usuarioService.sairSistema();
   };
 
-  const [searchTerm, setSearchTerm] = useState('');
+  // const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSearch = (term) => {
-    setSearchTerm(term);
-  };
+  // const handleSearch = (term) => {
+  //   setSearchTerm(term);
+  // };
 
   if (useLocation().pathname !== '/login') {
     return (
@@ -25,10 +25,6 @@ function Menu() {
         </li>
         <li><Link to='/clientes'>Clientes</Link></li>
         <li><Link to='/produtos'>Produtos</Link></li>
-
-        <li>
-          <SearchBox onSearch={handleSearch} />
-        </li>
 
         {/* botao de sair */}
         <li>

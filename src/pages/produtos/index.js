@@ -3,12 +3,46 @@ import './index.css';
 import produtoService from '../../service/produto-service';
 
 import { useEffect, useState } from 'react';
-import Produto from '../../models/Produto'
+import Produto from '../../models/Produto';
+import SearchBox from '../../components/menu/SearchBox';
 function ProdutoPage() {
 
     const [produtos, setProdutos] = useState([]);
     const [modoEdicao, setModoEdicao] = useState(false);
     const [produto, setProduto] = useState(new Produto());
+    const [produtosOriginais, setProdutosOriginais] = useState([]);
+
+    const handleSearch = (term) => {
+        
+        const termoPesquisa = term.toLowerCase();
+    
+        if (termoPesquisa === '') {
+            
+            setProdutos(produtosOriginais);
+        } else {
+            
+            const produtosFiltrados = produtos.filter(produto => {
+                return (
+                    produto.nome.toLowerCase().includes(termoPesquisa) ||
+                    produto.id.toString().includes(termoPesquisa)
+                );
+            });
+            setProdutos(produtosFiltrados);
+        }
+    };
+
+    useEffect(() => {
+        produtoService.obter()
+            .then(response => {
+                const data = response.data;
+                setProdutos([...data]);
+                setProdutosOriginais([...data]);
+            })
+            .catch(erro => {
+                console.log(erro)
+            })
+    }, []);
+    
 
 
 
@@ -112,6 +146,9 @@ function ProdutoPage() {
 
     return (
         <div className="container">
+            <div className="row">
+                <SearchBox onSearch={handleSearch} /> 
+            </div>
 
             {/* Titulo */}
             <div id="titulo" className="row mt-3">
@@ -130,7 +167,7 @@ function ProdutoPage() {
                         data-bs-toggle="modal"
                         data-bs-target="#modal-produto"
                         onClick={() => {
-                            limparProduto(); 
+                            limparProduto();
                             adicionar();
                         }}
                     >

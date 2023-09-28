@@ -41,13 +41,15 @@ li:last-child {
 .search-box {
     float: right;
     margin-right: 25px;
-    margin-left: 1030px;
+    margin-left: 1055px;
     margin-top: 11px;
     margin-bottom: 11px;
     width: 250px;
     border-radius: 7px;
-    border: none;
+    border-color: var(--cor-secundaria);
+    border-width: 2px;
     height: 35px;
     padding-inline: 10px;
+    
   }
   

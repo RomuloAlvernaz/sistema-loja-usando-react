@@ -4,12 +4,45 @@ import clienteService from '../../service/cliente-service';
 
 import { useEffect, useState } from 'react';
 import Cliente from '../../models/Cliente'
+import SearchBox from '../../components/menu/SearchBox';
 function ClientePage() {
 
     const [clientes, setClientes] = useState([]);
     const [modoEdicao, setModoEdicao] = useState(false);
     const [cliente, setCliente] = useState(new Cliente());
+    const [clientesOriginais, setClientesOriginais] = useState([]);
 
+    const handleSearch = (term) => {
+        
+        const termoPesquisa = term.toLowerCase();
+    
+        if (termoPesquisa === '') {
+            
+            setClientes(clientesOriginais);
+        } else {
+            
+            const clientesFiltrados = clientes.filter(cliente => {
+                return (
+                    cliente.nome.toLowerCase().includes(termoPesquisa) ||
+                    cliente.id.toString().includes(termoPesquisa)
+                );
+            });
+            setClientes(clientesFiltrados);
+        }
+    };
+
+    useEffect(() => {
+        clienteService.obter()
+            .then(response => {
+                const data = response.data;
+                setClientes([...data]);
+                setClientesOriginais([...data]);
+            })
+            .catch(erro => {
+                console.log(erro)
+            })
+    }, []);
+    
 
 
     useEffect(() => {
@@ -112,6 +145,9 @@ function ClientePage() {
 
     return (
         <div className="container">
+            <div className="row">
+                <SearchBox onSearch={handleSearch} /> 
+            </div>
 
             {/* Titulo */}
             <div id="titulo" className="row mt-3">
@@ -130,7 +166,7 @@ function ClientePage() {
                         data-bs-toggle="modal"
                         data-bs-target="#modal-cliente"
                         onClick={() => {
-                            limparCliente(); 
+                            limparCliente();
                             adicionar();
                         }}
                     >
