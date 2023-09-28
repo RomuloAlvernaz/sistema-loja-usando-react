@@ -1,6 +1,6 @@
 import Login from "./pages/login";
 import ClientePage from "./pages/clientes";
-import Produto from "./pages/produtos";
+import ProdutoPage from "./pages/produtos";
 
 import Menu from "./components/menu"; 
 
@@ -17,7 +17,7 @@ function Router(){
             <Routes>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/clientes" element={<ClientePage/>}/>
-                <Route path="/produtos" element={<Produto/>}/>
+                <Route path="/produtos" element={<ProdutoPage/>}/>
             </Routes>
         </BrowserRouter>
 
