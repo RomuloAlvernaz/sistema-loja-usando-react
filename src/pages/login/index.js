@@ -6,8 +6,8 @@ import usuarioService from '../../service/usuario-service';
 
 function Login() {
 
-    const [email, setEmail] = useState('admin@admin.com'); 
-    const [senha, setSenha] = useState('123456');
+    const [email, setEmail] = useState(); 
+    const [senha, setSenha] = useState();
 
     const logar = () => {
         if (!email || !senha){
